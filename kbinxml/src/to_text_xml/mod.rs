@@ -21,14 +21,14 @@ pub struct TextXmlWriter {
 impl TextXmlWriter {
     pub fn new() -> Self {
         let inner = Cursor::new(Vec::new());
-        let xml_writer = Writer::new_with_indent(inner, b' ', 2);
+        let xml_writer = Writer::new(inner);
 
         Self { xml_writer }
     }
 
     pub fn to_text_xml<T>(mut self, value: &T) -> Result<Vec<u8>, KbinError>
-    where
-        T: ToTextXml,
+        where
+            T: ToTextXml,
     {
         if let Some(encoding) = value.encoding().name() {
             let header = BytesDecl::new(b"1.0", Some(encoding.as_bytes()), None);
